@@ -115,9 +115,11 @@ def api_get_lastfm_tags(mng, q, results, lastfmkey):
             print('track tags: {}'.format(tracks_processed), flush=True)
             base_url = "http://ws.audioscrobbler.com/2.0/"
             headers = {'User-Agent': 'Spotify Genre Playlist Generator'}
+            artist_name = '+'.join(track[0].split(' ')).replace('&', '%26')
+            track_name = '+'.join(track[1].split(' ')).replace('&', '%26')
             params = {'method': 'track.gettoptags',
-                      'artist': '+'.join(track[0].split(' ')),
-                      'track': '+'.join(track[1].split(' ')),
+                      'artist': artist_name,
+                      'track': track_name,
                       'format': 'json',
                       'api_key': api_key,
                       'autocorrect': '1'}
