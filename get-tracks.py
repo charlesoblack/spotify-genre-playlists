@@ -99,7 +99,7 @@ if __name__ == '__main__':
     import pickle
 
     q = multiprocessing.Queue()
-    results = []
+    results = multiprocessing.Manager().list()
     mng = multiprocessing.Manager().list()
 
     api_get_saved = multiprocessing.Process(target=api_get_tracks,
