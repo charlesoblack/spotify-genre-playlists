@@ -121,11 +121,12 @@ def api_get_lastfm_tags(mng, q, results, lastfmkey):
                       'format': 'json',
                       'api_key': api_key,
                       'autocorrect': '1'}
-
-            resp = requests.get(base_url, headers=headers, params=params)
+            params_str = '&'.join([k + '=' + v for k, v in params.items()])
+            url = base_url + '?' + params_str
+            resp = requests.get(url, headers=headers)
 
             if resp.status_code != 200:
-                print('error {}, {}, {}'.format(base_url,
+                print('error {}, {}, {}'.format(url,
                                                 resp.status_code,
                                                 resp.text))
                 q.put(track)
@@ -144,7 +145,7 @@ def api_get_lastfm_tags(mng, q, results, lastfmkey):
                 elif data['error'] == 6:
                     print('track {} not found'.format(track))
                     print(data)
-                    print(params)
+                    print(resp.url)
 
         track = None
 
