@@ -3,7 +3,7 @@
 import multiprocessing
 
 
-def api_get_tracks(q):
+def api_get_tracks(mng, q):
     from time import sleep
     import requests
     import os
@@ -32,16 +32,19 @@ def api_get_tracks(q):
 
         for track in data['items']:
             q.put(track)
-        return
+        break
+
         request_url = data['next']
+    mng.put('DONE')
     return
 
 
 if __name__ == '__main__':
-    from time import sleep
     q = multiprocessing.Queue()
-    p1 = multiprocessing.Process(target=api_get_tracks, args=(q,))
+    mng = multiprocessing.Queue()
+    p1 = multiprocessing.Process(target=api_get_tracks, args=(mng, q))
     p1.start()
-    sleep(1)
-    print(q.get())
+    while mng.get() != 'DONE':
+        pass
+    p1.terminate()
     p1.join()
