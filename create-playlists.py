@@ -27,11 +27,13 @@ def put_playlist(song_uris):
 
 if __name__ == '__main__':
     import pickle
-    import random
+    from generate_similarity_clusters import get_clusters
 
     with open('user-data.pckl', 'rb') as f:
         data = pickle.load(f)
 
-    payload = [random.choice(list(data.keys())) for uri in range(10)]
-    result = put_playlist(payload)
+    payload = get_clusters(data)
+
+    result = put_playlist(payload[0])
+
     print(result, flush=True)
